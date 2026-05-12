@@ -1,0 +1,2259 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>미래 인사이트 :: 네이버SA 파워링크 대시보드</title>
+    <style>
+      :root {
+        --bg: #f4fbf7;
+        --surface: #f9fcfa;
+        --text: #182226;
+        --muted: #5e6e68;
+        --line: #dbe7e1;
+        --line-2: #e6efe9;
+        --brand: #03c75a;
+        --brand-dark: #00a64a;
+        --brand-soft: #e9f9f0;
+        --brand-soft-2: #f2fcf6;
+        --accent: #12b76a;
+        --warn: #e67d55;
+        --shadow: 0 18px 40px rgba(3, 199, 90, 0.10);
+        --shadow-soft: 0 10px 24px rgba(17, 24, 39, 0.06);
+        --radius: 20px;
+        --hero-sticky-bg: rgba(250, 254, 251, 0.88);
+      }
+
+      body[data-theme="powerlink"] {
+        --bg: #f4fbf7;
+        --surface: #f9fcfa;
+        --text: #182226;
+        --muted: #5e6e68;
+        --line: #dbe7e1;
+        --line-2: #e6efe9;
+        --brand: #03c75a;
+        --brand-dark: #00a64a;
+        --brand-soft: #e9f9f0;
+        --brand-soft-2: #f2fcf6;
+        --accent: #12b76a;
+        --shadow: 0 18px 40px rgba(3, 199, 90, 0.10);
+        --shadow-soft: 0 10px 24px rgba(17, 24, 39, 0.06);
+        --hero-sticky-bg: rgba(250, 254, 251, 0.88);
+      }
+
+      body[data-theme="shopping"] {
+        --bg: #f3f8ff;
+        --surface: #f7faff;
+        --text: #162233;
+        --muted: #5a6a82;
+        --line: #d8e4f4;
+        --line-2: #e6eef9;
+        --brand: #2b7cff;
+        --brand-dark: #1557c2;
+        --brand-soft: #eaf2ff;
+        --brand-soft-2: #f4f8ff;
+        --accent: #4a8dff;
+        --shadow: 0 18px 40px rgba(43, 124, 255, 0.10);
+        --shadow-soft: 0 10px 24px rgba(21, 87, 194, 0.10);
+        --hero-sticky-bg: rgba(246, 250, 255, 0.88);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background:
+          radial-gradient(1200px 620px at 0% -10%, rgba(0,0,0,0.04), transparent 58%),
+          radial-gradient(1000px 580px at 100% 0%, rgba(0,0,0,0.03), transparent 56%),
+          linear-gradient(180deg, #fbfffc 0%, var(--bg) 48%, #eef5f0 100%);
+        color: var(--text);
+      }
+
+      .container {
+        width: min(1240px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 12px 0 40px;
+      }
+
+      .sticky-shell {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        padding-top: 12px;
+        margin-bottom: 16px;
+        backdrop-filter: blur(12px);
+      }
+
+      .sticky-shell::before {
+        content: "";
+        position: absolute;
+        inset: 0 -20px auto -20px;
+        height: calc(100% + 6px);
+        background: linear-gradient(180deg, var(--hero-sticky-bg), rgba(255,255,255,0));
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .sticky-shell > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .card {
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255,255,255,0.98), var(--surface));
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+
+      .mt16 { margin-top: 16px; }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        font-size: 20px;
+        line-height: 1.35;
+        letter-spacing: -0.2px;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+      }
+
+      .hero-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .title-wrap {
+        display: grid;
+        gap: 4px;
+      }
+
+      .header-actions {
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .dropdown-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 0 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(0,0,0,0.08);
+        background: linear-gradient(180deg, #ffffff, var(--brand-soft-2));
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 700;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      }
+
+      .dropdown-trigger:hover {
+        background: linear-gradient(180deg, #ffffff, var(--brand-soft));
+      }
+
+      .dropdown-trigger-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .dropdown-chevron {
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid #445;
+        border-bottom: 2px solid #445;
+        transform: rotate(45deg) translateY(-1px);
+        transition: transform 0.18s ease;
+      }
+
+      .header-actions.open .dropdown-chevron {
+        transform: rotate(-135deg) translateY(-1px);
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        min-width: 240px;
+        padding: 10px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.98);
+        box-shadow: 0 20px 40px rgba(23, 37, 28, 0.12);
+        display: none;
+        z-index: 20;
+      }
+
+      .header-actions.open .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-item {
+        width: 100%;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text);
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+        box-shadow: none;
+        cursor: pointer;
+      }
+
+      .dropdown-item:hover {
+        background: var(--brand-soft-2);
+        border-color: var(--line);
+        filter: none;
+      }
+
+      .dropdown-item.active {
+        background: linear-gradient(180deg, #ffffff, var(--brand-soft));
+        border-color: rgba(0,0,0,0.08);
+        color: var(--brand-dark);
+      }
+
+      .dropdown-item-badge {
+        font-size: 11px;
+        color: var(--muted);
+        background: #ffffff;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 8px;
+      }
+
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(0,0,0,0.06);
+        background: linear-gradient(180deg, #ffffff, var(--brand-soft-2));
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: var(--brand-dark);
+        white-space: nowrap;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--brand);
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      input, textarea, select {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.98);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.16s ease, box-shadow 0.16s ease;
+      }
+
+      input:focus, textarea:focus, select:focus {
+        border-color: rgba(0,0,0,0.18);
+        box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+        background: #ffffff;
+      }
+
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+
+      .upload-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .upload-actions-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        min-width: 0;
+      }
+
+      .upload-actions-right {
+        margin-left: auto;
+      }
+
+      .file-info {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--brand-soft-2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+      }
+
+      .file-info-label {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--brand-dark);
+        flex-shrink: 0;
+      }
+
+      .file-info-name {
+        min-width: 0;
+        font-size: 13px;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .comment-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      button {
+        padding: 12px 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(0,0,0,0.08);
+        background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+        color: #ffffff;
+        cursor: pointer;
+        font-weight: 800;
+        letter-spacing: -0.1px;
+      }
+
+      button:hover {
+        filter: brightness(0.98);
+      }
+
+      .btn-subtle {
+        border-color: var(--line);
+        background: linear-gradient(180deg, #ffffff, var(--brand-soft-2));
+        color: var(--text);
+      }
+
+      .btn-download {
+        min-width: 156px;
+      }
+
+      .error {
+        border: 1px solid rgba(230, 125, 85, 0.45);
+        background: rgba(230, 125, 85, 0.10);
+        padding: 12px;
+        border-radius: 12px;
+        margin-top: 12px;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--brand-dark);
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--brand-soft-2);
+        padding: 7px 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 13px;
+      }
+
+      th, td {
+        border-top: 1px solid var(--line-2);
+        padding: 9px 8px;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      th {
+        color: var(--brand-dark);
+        background: var(--brand-soft-2);
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        background: linear-gradient(180deg, #ffffff, var(--brand-soft-2));
+      }
+
+      .kpi .label {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .kpi .value {
+        margin-top: 8px;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+        color: var(--text);
+      }
+
+      .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .chart-card {
+        min-height: 320px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chart-title {
+        margin-bottom: 14px;
+      }
+
+      .chart-canvas-wrap {
+        position: relative;
+        flex: 1;
+        min-height: 240px;
+      }
+
+      .chart-image {
+        width: 100%;
+        height: 240px;
+        object-fit: contain;
+        display: block;
+        background: #ffffff;
+        border-radius: 12px;
+      }
+
+      .comment-shell {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.98), var(--brand-soft-2));
+        padding: 12px;
+      }
+
+      .comment-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+
+      .comment-title {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.4;
+      }
+
+      .comment-badge {
+        font-size: 12px;
+        color: var(--brand-dark);
+        border: 1px solid var(--line);
+        background: var(--brand-soft-2);
+        border-radius: 999px;
+        padding: 6px 10px;
+      }
+
+      .comment-body {
+        white-space: pre-wrap;
+        line-height: 1.6;
+        color: var(--text);
+        font-size: 14px;
+        border: 1px solid var(--line-2);
+        border-radius: 12px;
+        padding: 10px;
+        background: #ffffff;
+      }
+
+      .cmt-list {
+        display: grid;
+        gap: 6px;
+        margin: 0;
+      }
+
+      .cmt-line {
+        border: 1px solid var(--line-2);
+        border-left-width: 4px;
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #ffffff;
+        line-height: 1.55;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .cmt-line.up { border-left-color: #16a34a; background: #f2fbf5; }
+      .cmt-line.down { border-left-color: #e67d55; background: #fff6f1; }
+      .cmt-line.expand { border-left-color: var(--brand); background: var(--brand-soft-2); }
+      .cmt-line.neutral { border-left-color: #9aac9f; background: #f8fbf9; }
+
+      .chip {
+        display: inline-block;
+        font-size: 12px;
+        border-radius: 999px;
+        padding: 2px 8px;
+        margin-right: 6px;
+        border: 1px solid transparent;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+
+      .chip.up { color: #157a4f; background: #e8f8f0; border-color: #bdecd6; }
+      .chip.down { color: #9b4d2d; background: #ffefe7; border-color: #ffd4c1; }
+      .chip.expand { color: var(--brand-dark); background: var(--brand-soft); border-color: var(--line); }
+      .chip.neutral { color: #52617a; background: #eef2f0; border-color: #d9e1dc; }
+
+      .list-toggle-row {
+        margin-top: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .list-toggle-btn {
+        min-width: 148px;
+        height: 42px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, #ffffff, var(--brand-soft-2));
+        color: var(--text);
+        font-weight: 800;
+        box-shadow: var(--shadow-soft);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .list-toggle-btn::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid #445;
+        border-bottom: 2px solid #445;
+        transform: rotate(45deg) translateY(-1px);
+        transition: transform 0.18s ease;
+      }
+
+      .list-toggle-btn.is-open::after {
+        transform: rotate(-135deg) translateY(-1px);
+      }
+
+      body.pdf-capture-mode .sticky-shell {
+        position: static;
+        top: auto;
+      }
+
+      body.pdf-capture-mode .sticky-shell::before {
+        display: none;
+      }
+
+      body.pdf-capture-mode .dropdown-menu {
+        display: none !important;
+      }
+
+      body.pdf-capture-mode #downloadPdfBtn,
+      body.pdf-capture-mode #buildBtn,
+      body.pdf-capture-mode #regenCommentBtn,
+      body.pdf-capture-mode #copyCommentBtn,
+      body.pdf-capture-mode .list-toggle-row,
+      body.pdf-capture-mode .header-actions {
+        display: none !important;
+      }
+
+      body.pdf-capture-mode .container {
+        width: min(1240px, calc(100% - 24px));
+        padding-top: 0;
+      }
+
+      body.pdf-capture-mode .card {
+        box-shadow: none;
+      }
+
+      .pdf-render-root {
+        position: fixed;
+        left: -100000px;
+        top: 0;
+        width: 1120px;
+        padding: 0;
+        margin: 0;
+        background: #ffffff;
+        z-index: -1;
+      }
+
+      .pdf-render-stack {
+        display: grid;
+        gap: 16px;
+        width: 1120px;
+        padding: 0;
+        background: #ffffff;
+      }
+
+      .pdf-render-stack .sticky-shell {
+        position: static !important;
+        top: auto !important;
+        padding-top: 0 !important;
+        margin-bottom: 0 !important;
+        backdrop-filter: none !important;
+      }
+
+      .pdf-render-stack .sticky-shell::before {
+        display: none !important;
+      }
+
+      .pdf-render-stack .card {
+        box-shadow: none !important;
+      }
+
+      .pdf-render-stack .dropdown-menu,
+      .pdf-render-stack #downloadPdfBtn,
+      .pdf-render-stack #buildBtn,
+      .pdf-render-stack #regenCommentBtn,
+      .pdf-render-stack #copyCommentBtn,
+      .pdf-render-stack .list-toggle-row,
+      .pdf-render-stack .header-actions {
+        display: none !important;
+      }
+
+      @media (max-width: 980px) {
+        .grid-2,
+        .kpi-grid,
+        .charts-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero-left {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .header-actions {
+          width: 100%;
+        }
+
+        .dropdown-trigger {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .dropdown-menu {
+          width: 100%;
+          min-width: 100%;
+        }
+
+        .upload-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .upload-actions-right {
+          margin-left: 0;
+        }
+
+        .upload-actions-left,
+        .upload-actions-right,
+        .comment-actions {
+          width: 100%;
+        }
+
+        .upload-actions-left button,
+        .upload-actions-right button,
+        .comment-actions button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body data-theme="powerlink">
+    <main id="pdfCaptureRoot" class="container">
+      <div class="sticky-shell">
+        <section class="card">
+          <div class="hero">
+            <div class="hero-left">
+              <div class="header-actions" id="headerDropdown">
+                <button id="dropdownToggle" class="dropdown-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+                  <span class="dropdown-trigger-label">
+                    <span id="currentMenuLabel">파워링크</span>
+                  </span>
+                  <span class="dropdown-chevron" aria-hidden="true"></span>
+                </button>
+
+                <div class="dropdown-menu" id="dropdownMenu">
+                  <button type="button" class="dropdown-item active" data-dashboard="powerlink">
+                    <span>파워링크</span>
+                    <span class="dropdown-item-badge">검색광고</span>
+                  </button>
+                  <button type="button" class="dropdown-item" data-dashboard="shopping">
+                    <span>쇼핑검색</span>
+                    <span class="dropdown-item-badge">상품광고</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="title-wrap">
+                <h1 id="dashboardTitle">미래 인사이트 :: 네이버SA 파워링크 대시보드</h1>
+                <p id="dashboardDesc">업로드한 다차원보고서를 인사이트 카드, 차트, 테이블 기반으로 분석하는 파워링크 광고 전용 리포팅 대시보드입니다.</p>
+              </div>
+            </div>
+
+            <div class="hero-tag"><span class="dot"></span> <span id="dashboardTag">POWERLINK DASHBOARD</span></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <h2>1) 보고서 업로드</h2>
+          <div class="section-badge">파일 기반 자동 분석</div>
+        </div>
+
+        <div class="grid-2">
+          <label>
+            <span id="uploadGuideLabel">파일 선택 (XLSX/XLS/CSV/TSV)</span>
+            <input id="fileInput" type="file" accept=".xlsx,.xls,.csv,.tsv,.txt" />
+          </label>
+
+          <label>
+            상호명 키워드 (한글/영문, 쉼표 또는 줄바꿈으로 구분)
+            <textarea id="brandInput" placeholder="예) 바이브코딩, vibe coding, vibecoding"></textarea>
+          </label>
+        </div>
+
+        <div class="file-info">
+          <span class="file-info-label">업로드 파일</span>
+          <span id="uploadedFileName" class="file-info-name">선택된 파일이 없습니다.</span>
+        </div>
+
+        <div class="upload-actions">
+          <div class="upload-actions-left">
+            <button id="buildBtn" type="button">인사이트 생성</button>
+            <span id="status" class="small">파일 업로드 후 버튼을 눌러주세요.</span>
+          </div>
+          <div class="upload-actions-right">
+            <button id="downloadPdfBtn" type="button" class="btn-download">인사이트 다운로드</button>
+          </div>
+        </div>
+
+        <div id="errorBox" class="error" style="display:none;"></div>
+      </section>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <h2>2) 캠페인/광고그룹 필터</h2>
+          <div class="section-badge">조건별 세부 분석</div>
+        </div>
+
+        <div class="grid-2">
+          <label>
+            캠페인
+            <select id="filterCampaign">
+              <option value="">전체 캠페인</option>
+            </select>
+          </label>
+
+          <label>
+            광고그룹
+            <select id="filterAdGroup">
+              <option value="">전체 광고그룹</option>
+            </select>
+          </label>
+        </div>
+
+        <p class="small mt16" id="filterSummary">필터 적용 전입니다.</p>
+      </section>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <h2>요약 KPI</h2>
+          <div class="section-badge">광고 성과 핵심 지표</div>
+        </div>
+
+        <p class="small" id="kpiScope">분석 범위: 캠페인 전체 / 광고그룹 전체</p>
+
+        <div class="kpi-grid mt16">
+          <div class="kpi">
+            <div class="label">총 광고비용</div>
+            <div class="value" id="kpiCost">-</div>
+          </div>
+          <div class="kpi">
+            <div class="label">총 전환매출액</div>
+            <div class="value" id="kpiRevenue">-</div>
+          </div>
+          <div class="kpi">
+            <div class="label">평균 ROAS</div>
+            <div class="value" id="kpiRoas">-</div>
+          </div>
+          <div class="kpi">
+            <div class="label">전체 전환수</div>
+            <div class="value" id="kpiConv">-</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <h2>차트 인사이트</h2>
+          <div class="section-badge">전환/비용 차트</div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="card chart-card">
+            <div class="chart-title">
+              <p class="small" id="chartConvLabel">전환키워드 TOP5 (전환수)</p>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="chartTopConv"></canvas>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="chart-title">
+              <p class="small" id="chartCostLabel">비용키워드 TOP5 (광고비용)</p>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="chartTopCost"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card mt16">
+        <h2 id="topConvTitle">전환키워드 TOP5</h2>
+        <p class="small">기준: 전환수 내림차순, 동률 시 전환매출액 내림차순</p>
+        <div id="topConv"></div>
+      </section>
+
+      <section class="card mt16">
+        <h2 id="topCostTitle">비용 키워드 TOP5</h2>
+        <p class="small">기준: 광고비용 내림차순, 동률 시 노출수 내림차순</p>
+        <div id="topCost"></div>
+      </section>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <div>
+            <h2 id="upwardTitle">상향조정 해야 할 키워드</h2>
+            <p class="small">기준: ROAS 300% 이상 AND 순위 3순위 이하(1~2순위 제외)</p>
+          </div>
+        </div>
+        <div id="upward"></div>
+        <div class="list-toggle-row">
+          <button id="toggleUpwardBtn" type="button" class="list-toggle-btn" style="display:none;">더보기</button>
+        </div>
+      </section>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <div>
+            <h2 id="downwardTitle">하향조정 해야 할 키워드</h2>
+            <p class="small">기준: ROAS 300% 이하 AND 광고비용 10000원 이상</p>
+          </div>
+        </div>
+        <div id="downward"></div>
+        <div class="list-toggle-row">
+          <button id="toggleDownwardBtn" type="button" class="list-toggle-btn" style="display:none;">더보기</button>
+        </div>
+      </section>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <div>
+            <h2 id="expandTitle">확장해야 할 키워드</h2>
+            <p class="small">기준: CPA(광고비용/전환수) 낮은 순</p>
+          </div>
+        </div>
+        <div id="expand"></div>
+        <div class="list-toggle-row">
+          <button id="toggleExpandBtn" type="button" class="list-toggle-btn" style="display:none;">더보기</button>
+        </div>
+      </section>
+
+      <section class="card mt16">
+        <div class="section-head">
+          <h2>코멘트</h2>
+          <div class="section-badge">요약 코멘트</div>
+        </div>
+
+        <div class="comment-shell">
+          <div class="comment-head">
+            <div class="comment-title">인사이트 기반 코멘트</div>
+            <div id="commentMeta" class="comment-badge">인사이트 기반 작성</div>
+          </div>
+          <div id="commentPreview" class="comment-body">아직 코멘트가 없습니다.</div>
+        </div>
+
+        <textarea id="commentBox" readonly style="display:none;"></textarea>
+
+        <div class="comment-actions">
+          <button id="regenCommentBtn" type="button" class="btn-subtle">코멘트 다시 생성</button>
+          <button id="copyCommentBtn" type="button" class="btn-subtle">코멘트 복사</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      const DASHBOARD_CONFIG = {
+        powerlink: {
+          label: "파워링크",
+          title: "미래 인사이트 :: 네이버SA 파워링크 대시보드",
+          desc: "업로드한 다차원보고서를 인사이트 카드, 차트, 테이블 기반으로 분석하는 파워링크 광고 전용 리포팅 대시보드입니다.",
+          tag: "POWERLINK DASHBOARD",
+          uploadLabel: "파일 선택 (XLSX/XLS/CSV/TSV)",
+          statusIdle: "파워링크 파일 업로드 후 버튼을 눌러주세요.",
+          dimensionLabel: "키워드",
+          topConvTitle: "전환키워드 TOP5",
+          topCostTitle: "비용 키워드 TOP5",
+          upwardTitle: "상향조정 해야 할 키워드",
+          downwardTitle: "하향조정 해야 할 키워드",
+          expandTitle: "확장해야 할 키워드",
+          chartConvLabel: "전환키워드 TOP5 (전환수)",
+          chartCostLabel: "비용키워드 TOP5 (광고비용)"
+        },
+        shopping: {
+          label: "쇼핑검색",
+          title: "미래 인사이트 :: 네이버SA 쇼핑검색 대시보드",
+          desc: "업로드한 다차원보고서를 인사이트 카드, 차트, 테이블 기반으로 분석하는 쇼핑검색 광고 전용 리포팅 대시보드입니다.",
+          tag: "SHOPPING SEARCH DASHBOARD",
+          uploadLabel: "파일 선택 (XLSX/XLS/CSV/TSV)",
+          statusIdle: "쇼핑검색 파일 업로드 후 버튼을 눌러주세요.",
+          dimensionLabel: "소재ID",
+          topConvTitle: "전환소재 TOP5",
+          topCostTitle: "비용 소재 TOP5",
+          upwardTitle: "상향조정 해야 할 소재",
+          downwardTitle: "하향조정 해야 할 소재",
+          expandTitle: "확장해야 할 소재",
+          chartConvLabel: "전환소재 TOP5 (전환수)",
+          chartCostLabel: "비용소재 TOP5 (광고비용)"
+        }
+      };
+
+      const HEADER_MAPS = {
+        powerlink: {
+          campaign: "캠페인",
+          adGroup: "광고그룹",
+          item: ["키워드", "검색어"],
+          impression: "노출수",
+          click: "클릭수",
+          ctr: "클릭률(%)",
+          avgCpc: "평균클릭비용(VAT포함, 원)",
+          totalCost: "총비용(VAT포함, 원)",
+          conv: "총 전환수",
+          convRate: "총 전환율(%)",
+          convRevenue: "총 전환매출액(원)",
+          adCost: ["총비용(VAT포함,원)", "총비용(VAT포함, 원)"],
+          rank: "평균노출순위"
+        },
+        shopping: {
+          campaign: "캠페인",
+          adGroup: "광고그룹",
+          item: ["소재", "소재ID"],
+          impression: "노출수",
+          click: "클릭수",
+          ctr: "클릭률(%)",
+          avgCpc: "평균클릭비용(VAT포함, 원)",
+          totalCost: "총비용(VAT포함, 원)",
+          conv: "총 전환수",
+          convRate: "총 전환율(%)",
+          convRevenue: "총 전환매출액(원)",
+          adCost: ["총비용(VAT포함,원)", "총비용(VAT포함, 원)"],
+          rank: "평균노출순위"
+        }
+      };
+
+      const LIST_PREVIEW_COUNT = 5;
+
+      const emptyDashboardState = () => ({
+        parsedRows: [],
+        visibleRows: [],
+        latestInsightRows: {
+          upward: [],
+          downward: [],
+          expand: [],
+        },
+        latestSummary: {
+          topConv: [],
+          topCost: [],
+          upward: [],
+          downward: [],
+          expand: [],
+        },
+        listOpenState: {
+          upward: false,
+          downward: false,
+          expand: false,
+        },
+        filterCampaign: "",
+        filterAdGroup: "",
+        brandInput: "",
+        uploadedFileName: "",
+        lastStatus: "",
+        hasData: false,
+      });
+
+      const dashboardStates = {
+        powerlink: emptyDashboardState(),
+        shopping: emptyDashboardState(),
+      };
+
+      let currentDashboard = "powerlink";
+      let parsedRows = [];
+      let visibleRows = [];
+      let latestInsightRows = { upward: [], downward: [], expand: [] };
+      let latestSummary = { topConv: [], topCost: [], upward: [], downward: [], expand: [] };
+      let listOpenState = { upward: false, downward: false, expand: false };
+      let chartRefs = {};
+
+      function getDimensionLabel() {
+        return DASHBOARD_CONFIG[currentDashboard].dimensionLabel;
+      }
+
+      function getDisplayHeaders() {
+        return [
+          "순번",
+          "캠페인",
+          "광고그룹",
+          getDimensionLabel(),
+          "노출수",
+          "클릭수",
+          "클릭률",
+          "평균클릭비용",
+          "총비용",
+          "전환수",
+          "전환률",
+          "전환매출액",
+          "광고비용",
+          "광고수익률(ROAS)",
+          "순위",
+        ];
+      }
+
+      function setError(msg) {
+        $("errorBox").style.display = "block";
+        $("errorBox").textContent = msg;
+      }
+
+      function clearError() {
+        $("errorBox").style.display = "none";
+        $("errorBox").textContent = "";
+      }
+
+      function setUploadedFileName(name) {
+        $("uploadedFileName").textContent = name || "선택된 파일이 없습니다.";
+      }
+
+      function n(v) {
+        if (typeof v === "number") return Number.isFinite(v) ? v : 0;
+        const s = String(v ?? "").replace(/,/g, "").replace(/[^\d.-]/g, "");
+        if (!s || s === "-" || s === ".") return 0;
+        const x = parseFloat(s);
+        return Number.isFinite(x) ? x : 0;
+      }
+
+      function esc(s) {
+        return String(s ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function normalize(s) {
+        return String(s ?? "").trim().toLowerCase().replace(/\s+/g, "");
+      }
+
+      function parseDelimitedText(text, delimiter) {
+        const lines = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+        const rows = [];
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const cells = [];
+          let cell = "";
+          let inQuotes = false;
+
+          for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') {
+              if (inQuotes && line[i + 1] === '"') {
+                cell += '"';
+                i++;
+              } else {
+                inQuotes = !inQuotes;
+              }
+            } else if (!inQuotes && ch === delimiter) {
+              cells.push(cell);
+              cell = "";
+            } else {
+              cell += ch;
+            }
+          }
+
+          cells.push(cell);
+          rows.push(cells);
+        }
+
+        return rows;
+      }
+
+      function getMapAliasesValue(value) {
+        return Array.isArray(value) ? value : [value];
+      }
+
+      function getCurrentHeaderMap() {
+        return HEADER_MAPS[currentDashboard];
+      }
+
+      function getRequiredHeadersForCurrentDashboard() {
+        const map = getCurrentHeaderMap();
+        return [
+          ...getMapAliasesValue(map.campaign),
+          ...getMapAliasesValue(map.adGroup),
+          ...getMapAliasesValue(map.item),
+          ...getMapAliasesValue(map.impression),
+          ...getMapAliasesValue(map.click),
+          ...getMapAliasesValue(map.ctr),
+          ...getMapAliasesValue(map.avgCpc),
+          ...getMapAliasesValue(map.totalCost),
+          ...getMapAliasesValue(map.conv),
+          ...getMapAliasesValue(map.convRate),
+          ...getMapAliasesValue(map.convRevenue),
+          ...getMapAliasesValue(map.adCost),
+          ...getMapAliasesValue(map.rank),
+        ];
+      }
+
+      function detectHeaderRow(aoa) {
+        const requiredHeaders = getRequiredHeadersForCurrentDashboard();
+        const maxScan = Math.min(aoa.length, 10);
+        let best = { idx: 0, score: -1 };
+
+        for (let i = 0; i < maxScan; i++) {
+          const row = (aoa[i] || []).map((x) => String(x ?? "").trim());
+          const set = new Set(row.map((h) => normalize(h)));
+          let score = 0;
+
+          requiredHeaders.forEach((h) => {
+            if (set.has(normalize(h))) score += 1;
+          });
+
+          if (score > best.score) best = { idx: i, score };
+        }
+
+        return best.idx;
+      }
+
+      function findHeaderIndex(headers, aliases) {
+        const headerMap = new Map(headers.map((h, i) => [normalize(h), i]));
+        for (const alias of getMapAliasesValue(aliases)) {
+          if (headerMap.has(normalize(alias))) return headerMap.get(normalize(alias));
+        }
+        return -1;
+      }
+
+      function extractShoppingMaterialId(raw) {
+        const text = String(raw ?? "").trim();
+        if (!text) return "";
+
+        const digitMatches = text.match(/\d+/g);
+        if (!digitMatches || !digitMatches.length) return text;
+
+        const lastNumber = digitMatches[digitMatches.length - 1];
+        const trimmed = lastNumber.replace(/^0+/, "");
+        return trimmed || "0";
+      }
+
+      function parseBrandTerms(raw) {
+        return raw
+          .split(/[\n,]+/g)
+          .map((x) => x.trim())
+          .filter(Boolean);
+      }
+
+      function containsBrand(value, terms) {
+        const source = String(value ?? "").toLowerCase();
+        return terms.some((t) => source.includes(t.toLowerCase()));
+      }
+
+      function toDisplayRow(item, rankNo) {
+        return {
+          rankNo,
+          campaign: item.캠페인,
+          adGroup: item.광고그룹,
+          itemName: item.항목명,
+          impression: item.노출수,
+          click: item.클릭수,
+          ctr: item.클릭률,
+          avgCpc: item.평균클릭비용,
+          totalCost: item.총비용,
+          conv: item.전환수,
+          convRate: item.전환률,
+          convRevenue: item.전환매출액,
+          adCost: item.광고비용,
+          roas: item.ROAS,
+          originRank: item.순위,
+          cpa: item.CPA,
+        };
+      }
+
+      function fmtPercent(v) {
+        const rounded = Math.round(n(v));
+        return rounded.toLocaleString("ko-KR") + "%";
+      }
+
+      function fmtMoney(v) {
+        return Math.round(n(v)).toLocaleString("ko-KR") + "원";
+      }
+
+      function tableHtml(rows, emptyText) {
+        if (!rows.length) return `<div class="small">${esc(emptyText)}</div>`;
+
+        const displayHeaders = getDisplayHeaders();
+        const head = displayHeaders.map((h) => `<th>${esc(h)}</th>`).join("");
+        const body = rows.map((r) => `
+          <tr>
+            <td>${r.rankNo}</td>
+            <td>${esc(r.campaign)}</td>
+            <td>${esc(r.adGroup)}</td>
+            <td>${esc(r.itemName)}</td>
+            <td>${Math.round(r.impression).toLocaleString("ko-KR")}</td>
+            <td>${Math.round(r.click).toLocaleString("ko-KR")}</td>
+            <td>${fmtPercent(r.ctr)}</td>
+            <td>${Math.round(r.avgCpc).toLocaleString("ko-KR")}원</td>
+            <td>${Math.round(r.totalCost).toLocaleString("ko-KR")}원</td>
+            <td>${Math.round(r.conv).toLocaleString("ko-KR")}</td>
+            <td>${fmtPercent(r.convRate)}</td>
+            <td>${Math.round(r.convRevenue).toLocaleString("ko-KR")}원</td>
+            <td>${Math.round(r.adCost).toLocaleString("ko-KR")}원</td>
+            <td>${fmtPercent(r.roas)}</td>
+            <td>${Math.round(r.originRank).toLocaleString("ko-KR")}</td>
+          </tr>
+        `).join("");
+
+        return `<div class="table-wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+      }
+
+      function getVisibleRowsByToggle(type, rows) {
+        return listOpenState[type] ? rows : rows.slice(0, LIST_PREVIEW_COUNT);
+      }
+
+      function renderToggleButton(type, rows) {
+        const buttonMap = {
+          upward: $("toggleUpwardBtn"),
+          downward: $("toggleDownwardBtn"),
+          expand: $("toggleExpandBtn"),
+        };
+        const btn = buttonMap[type];
+        if (!btn) return;
+
+        if (!rows || rows.length <= LIST_PREVIEW_COUNT) {
+          btn.style.display = "none";
+          btn.classList.remove("is-open");
+          return;
+        }
+
+        btn.style.display = "inline-flex";
+        btn.textContent = listOpenState[type] ? "접기" : `더보기 (${rows.length - LIST_PREVIEW_COUNT}개 더)`;
+        btn.classList.toggle("is-open", listOpenState[type]);
+      }
+
+      function destroyCharts() {
+        Object.values(chartRefs).forEach((c) => {
+          if (c && typeof c.destroy === "function") c.destroy();
+        });
+        chartRefs = {};
+      }
+
+      function shortItemLabel(s) {
+        const value = String(s || "");
+        return value.length > 12 ? value.slice(0, 12) + "..." : value;
+      }
+
+      function renderKpi(items) {
+        const totalCost = items.reduce((a, b) => a + b.광고비용, 0);
+        const totalRevenue = items.reduce((a, b) => a + b.전환매출액, 0);
+        const totalConv = items.reduce((a, b) => a + b.전환수, 0);
+        const avgRoas = totalCost > 0 ? (totalRevenue / totalCost) * 100 : 0;
+
+        const selectedCampaign = $("filterCampaign").value || "전체";
+        const selectedAdGroup = $("filterAdGroup").value || "전체";
+        const currentCount = items.length.toLocaleString("ko-KR");
+        const totalCount = parsedRows.length.toLocaleString("ko-KR");
+
+        $("kpiScope").textContent = `분석 범위: 캠페인 ${selectedCampaign} / 광고그룹 ${selectedAdGroup} · 데이터 ${currentCount}개 (전체 ${totalCount}개)`;
+        $("kpiCost").textContent = Math.round(totalCost).toLocaleString("ko-KR") + "원";
+        $("kpiRevenue").textContent = Math.round(totalRevenue).toLocaleString("ko-KR") + "원";
+        $("kpiRoas").textContent = fmtPercent(avgRoas);
+        $("kpiConv").textContent = Math.round(totalConv).toLocaleString("ko-KR");
+      }
+
+      function renderCharts(summary) {
+        if (!window.Chart) return;
+
+        destroyCharts();
+
+        const styles = getComputedStyle(document.body);
+        const commonOpts = {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: styles.getPropertyValue("--text").trim(),
+                font: { weight: "700" }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: styles.getPropertyValue("--muted").trim() },
+              grid: { color: styles.getPropertyValue("--line-2").trim() }
+            },
+            y: {
+              ticks: { color: styles.getPropertyValue("--muted").trim() },
+              grid: { color: styles.getPropertyValue("--line-2").trim() }
+            }
+          }
+        };
+
+        const brand = styles.getPropertyValue("--brand").trim();
+        const brandDark = styles.getPropertyValue("--brand-dark").trim();
+
+        chartRefs.topConv = new Chart($("chartTopConv"), {
+          type: "bar",
+          data: {
+            labels: summary.topConv.map((x) => shortItemLabel(x.itemName)),
+            datasets: [{
+              label: "전환수",
+              data: summary.topConv.map((x) => x.conv),
+              backgroundColor: brand + "B8",
+              borderColor: brand,
+              borderWidth: 1,
+              borderRadius: 8
+            }]
+          },
+          options: commonOpts
+        });
+
+        chartRefs.topCost = new Chart($("chartTopCost"), {
+          type: "bar",
+          data: {
+            labels: summary.topCost.map((x) => shortItemLabel(x.itemName)),
+            datasets: [{
+              label: "광고비용",
+              data: summary.topCost.map((x) => x.adCost),
+              backgroundColor: brandDark + "B8",
+              borderColor: brandDark,
+              borderWidth: 1,
+              borderRadius: 8
+            }]
+          },
+          options: commonOpts
+        });
+
+        try {
+          chartRefs.topConv.update("none");
+          chartRefs.topCost.update("none");
+        } catch (_) {}
+      }
+
+      function itemList(rows, limit) {
+        return rows.slice(0, limit).map((r) => r.itemName).filter(Boolean).join(", ");
+      }
+
+      function generateAutoComment(summary) {
+        const itemLabel = getDimensionLabel();
+        const lines = [];
+
+        if (summary.topConv.length) lines.push(`[전환 TOP5] ${itemList(summary.topConv, 5)}`);
+        else lines.push(`[전환 TOP5] 조건에 맞는 ${itemLabel}가 없습니다.`);
+
+        if (summary.topCost.length) lines.push(`[비용 TOP5] ${itemList(summary.topCost, 5)}`);
+        else lines.push(`[비용 TOP5] 조건에 맞는 ${itemLabel}가 없습니다.`);
+
+        if (summary.upward.length) lines.push(`[상향 권장] ${summary.upward.length}개 (${itemList(summary.upward, 3)}) - ROAS 300% 이상이면서 평균노출순위 3 이상으로 입찰 상향 검토가 필요합니다.`);
+        else lines.push(`[상향 권장] 조건 충족 ${itemLabel}가 없습니다.`);
+
+        if (summary.downward.length) lines.push(`[하향 권장] ${summary.downward.length}개 (${itemList(summary.downward, 3)}) - ROAS 300% 이하 + 광고비용 10,000원 이상으로 입찰 하향 또는 제외 검토가 필요합니다.`);
+        else lines.push(`[하향 권장] 조건 충족 ${itemLabel}가 없습니다.`);
+
+        if (summary.expand.length) {
+          const bestCpa = summary.expand[0]?.cpa;
+          const cpaText = Number.isFinite(bestCpa) ? fmtMoney(bestCpa) : "-";
+          lines.push(`[확장 권장] ${summary.expand.length}개 (${itemList(summary.expand, 3)}) - CPA 효율 상위 ${itemLabel} 중심으로 확장 권장 (최저 CPA: ${cpaText}).`);
+        } else {
+          lines.push(`[확장 권장] 전환 데이터가 부족하여 확장 후보 ${itemLabel}가 없습니다.`);
+        }
+
+        lines.push(`실행 우선순위: 1) 상향 ${itemLabel} 입찰 상향 2) 하향 ${itemLabel} 정리 3) 확장 ${itemLabel} 테스트.`);
+
+        $("commentBox").value = lines.join("\n");
+
+        const topConvText = summary.topConv.length ? itemList(summary.topConv, 5) : `조건에 맞는 ${itemLabel}가 없습니다.`;
+        const topCostText = summary.topCost.length ? itemList(summary.topCost, 5) : `조건에 맞는 ${itemLabel}가 없습니다.`;
+        const upText = summary.upward.length ? `${summary.upward.length}개 (${itemList(summary.upward, 3)}) - ROAS 300% 이상 + 평균노출순위 3 이상` : `조건 충족 ${itemLabel}가 없습니다.`;
+        const downText = summary.downward.length ? `${summary.downward.length}개 (${itemList(summary.downward, 3)}) - ROAS 300% 이하 + 광고비용 10,000원 이상` : `조건 충족 ${itemLabel}가 없습니다.`;
+        const expandText = summary.expand.length ? `${summary.expand.length}개 (${itemList(summary.expand, 3)}) - CPA 효율 상위 ${itemLabel} 중심 확장 권장` : `전환 데이터가 부족하여 확장 후보 ${itemLabel}가 없습니다.`;
+
+        $("commentPreview").innerHTML = `
+          <div class="cmt-list">
+            <div class="cmt-line neutral"><span class="chip neutral">전환 TOP5</span>${esc(topConvText)}</div>
+            <div class="cmt-line neutral"><span class="chip neutral">비용 TOP5</span>${esc(topCostText)}</div>
+            <div class="cmt-line up"><span class="chip up">상향 권장</span>${esc(upText)}</div>
+            <div class="cmt-line down"><span class="chip down">하향 권장</span>${esc(downText)}</div>
+            <div class="cmt-line expand"><span class="chip expand">확장 권장</span>${esc(expandText)}</div>
+            <div class="cmt-line neutral"><span class="chip neutral">실행 우선순위</span>${esc(`1) 상향 ${itemLabel} 입찰 상향 2) 하향 ${itemLabel} 정리 3) 확장 ${itemLabel} 테스트`)}</div>
+          </div>
+        `;
+
+        $("commentMeta").textContent = `작성 시각: ${new Date().toLocaleString("ko-KR")}`;
+      }
+
+      function renderInsights(items) {
+        const topConv = items
+          .slice()
+          .sort((a, b) => (b.전환수 - a.전환수) || (b.전환매출액 - a.전환매출액))
+          .slice(0, 5)
+          .map((x, i) => toDisplayRow(x, i + 1));
+
+        const topCost = items
+          .slice()
+          .sort((a, b) => (b.광고비용 - a.광고비용) || (b.노출수 - a.노출수))
+          .slice(0, 5)
+          .map((x, i) => toDisplayRow(x, i + 1));
+
+        const upward = items
+          .filter((x) => x.ROAS >= 300 && x.순위 >= 3)
+          .sort((a, b) => (b.ROAS - a.ROAS) || (a.순위 - b.순위))
+          .map((x, i) => toDisplayRow(x, i + 1));
+
+        const downward = items
+          .filter((x) => x.ROAS <= 300 && x.광고비용 >= 10000)
+          .sort((a, b) => (a.ROAS - b.ROAS) || (b.광고비용 - a.광고비용))
+          .map((x, i) => toDisplayRow(x, i + 1));
+
+        const expand = items
+          .filter((x) => x.전환수 > 0 && Number.isFinite(x.CPA))
+          .sort((a, b) => (a.CPA - b.CPA) || (b.전환수 - a.전환수))
+          .map((x, i) => toDisplayRow(x, i + 1));
+
+        latestInsightRows = { upward, downward, expand };
+        latestSummary = { topConv, topCost, upward, downward, expand };
+
+        $("topConv").innerHTML = tableHtml(topConv, "조건에 맞는 데이터가 없습니다.");
+        $("topCost").innerHTML = tableHtml(topCost, "조건에 맞는 데이터가 없습니다.");
+        $("upward").innerHTML = tableHtml(getVisibleRowsByToggle("upward", upward), "조건에 맞는 데이터가 없습니다.");
+        $("downward").innerHTML = tableHtml(getVisibleRowsByToggle("downward", downward), "조건에 맞는 데이터가 없습니다.");
+        $("expand").innerHTML = tableHtml(getVisibleRowsByToggle("expand", expand), "조건에 맞는 데이터가 없습니다.");
+
+        renderToggleButton("upward", upward);
+        renderToggleButton("downward", downward);
+        renderToggleButton("expand", expand);
+
+        renderKpi(items);
+        renderCharts(latestSummary);
+        generateAutoComment(latestSummary);
+      }
+
+      function setSelectOptions(selectEl, values, emptyLabel) {
+        const currentValue = selectEl.value;
+        selectEl.innerHTML = "";
+
+        const baseOpt = document.createElement("option");
+        baseOpt.value = "";
+        baseOpt.textContent = emptyLabel;
+        selectEl.appendChild(baseOpt);
+
+        values.forEach((v) => {
+          const opt = document.createElement("option");
+          opt.value = v;
+          opt.textContent = v;
+          selectEl.appendChild(opt);
+        });
+
+        selectEl.value = values.includes(currentValue) ? currentValue : "";
+      }
+
+      function refreshAdGroupFilterOptions() {
+        const selectedCampaign = $("filterCampaign").value;
+        const source = selectedCampaign ? parsedRows.filter((r) => r.캠페인 === selectedCampaign) : parsedRows;
+        const adGroups = Array.from(new Set(source.map((r) => r.광고그룹).filter(Boolean))).sort((a, b) => a.localeCompare(b, "ko"));
+        setSelectOptions($("filterAdGroup"), adGroups, "전체 광고그룹");
+      }
+
+      function applyFilters() {
+        const selectedCampaign = $("filterCampaign").value;
+        const selectedAdGroup = $("filterAdGroup").value;
+
+        visibleRows = parsedRows.filter((row) => {
+          const campaignOk = !selectedCampaign || row.캠페인 === selectedCampaign;
+          const adGroupOk = !selectedAdGroup || row.광고그룹 === selectedAdGroup;
+          return campaignOk && adGroupOk;
+        });
+
+        listOpenState = { upward: false, downward: false, expand: false };
+
+        renderInsights(visibleRows);
+        $("filterSummary").textContent = `필터 결과: ${visibleRows.length.toLocaleString("ko-KR")}개 / 전체 ${parsedRows.length.toLocaleString("ko-KR")}개`;
+        saveCurrentDashboardState();
+      }
+
+      function toggleInsightList(type) {
+        listOpenState[type] = !listOpenState[type];
+        const rows = latestInsightRows[type] || [];
+        const targetMap = { upward: $("upward"), downward: $("downward"), expand: $("expand") };
+        const container = targetMap[type];
+        if (!container) return;
+
+        container.innerHTML = tableHtml(getVisibleRowsByToggle(type, rows), "조건에 맞는 데이터가 없습니다.");
+        renderToggleButton(type, rows);
+        saveCurrentDashboardState();
+      }
+
+      function setEmptyVisuals() {
+        destroyCharts();
+        latestSummary = { topConv: [], topCost: [], upward: [], downward: [], expand: [] };
+
+        $("topConv").innerHTML = `<div class="small">조건에 맞는 데이터가 없습니다.</div>`;
+        $("topCost").innerHTML = `<div class="small">조건에 맞는 데이터가 없습니다.</div>`;
+        $("upward").innerHTML = `<div class="small">조건에 맞는 데이터가 없습니다.</div>`;
+        $("downward").innerHTML = `<div class="small">조건에 맞는 데이터가 없습니다.</div>`;
+        $("expand").innerHTML = `<div class="small">조건에 맞는 데이터가 없습니다.</div>`;
+
+        $("toggleUpwardBtn").style.display = "none";
+        $("toggleDownwardBtn").style.display = "none";
+        $("toggleExpandBtn").style.display = "none";
+
+        $("kpiScope").textContent = "분석 범위: 캠페인 전체 / 광고그룹 전체";
+        $("kpiCost").textContent = "-";
+        $("kpiRevenue").textContent = "-";
+        $("kpiRoas").textContent = "-";
+        $("kpiConv").textContent = "-";
+
+        $("commentPreview").textContent = "아직 코멘트가 없습니다.";
+        $("commentBox").value = "";
+        $("commentMeta").textContent = "인사이트 기반 작성";
+        $("filterSummary").textContent = "필터 적용 전입니다.";
+      }
+
+      function clearUiForDashboard(config) {
+        parsedRows = [];
+        visibleRows = [];
+        latestInsightRows = { upward: [], downward: [], expand: [] };
+        latestSummary = { topConv: [], topCost: [], upward: [], downward: [], expand: [] };
+        listOpenState = { upward: false, downward: false, expand: false };
+
+        $("fileInput").value = "";
+        $("brandInput").value = "";
+        setUploadedFileName("");
+        setSelectOptions($("filterCampaign"), [], "전체 캠페인");
+        setSelectOptions($("filterAdGroup"), [], "전체 광고그룹");
+        $("status").textContent = config.statusIdle;
+        clearError();
+        setEmptyVisuals();
+      }
+
+      function saveCurrentDashboardState() {
+        dashboardStates[currentDashboard] = {
+          parsedRows: JSON.parse(JSON.stringify(parsedRows)),
+          visibleRows: JSON.parse(JSON.stringify(visibleRows)),
+          latestInsightRows: JSON.parse(JSON.stringify(latestInsightRows)),
+          latestSummary: JSON.parse(JSON.stringify(latestSummary)),
+          listOpenState: JSON.parse(JSON.stringify(listOpenState)),
+          filterCampaign: $("filterCampaign").value,
+          filterAdGroup: $("filterAdGroup").value,
+          brandInput: $("brandInput").value,
+          uploadedFileName: $("uploadedFileName").textContent === "선택된 파일이 없습니다." ? "" : $("uploadedFileName").textContent,
+          lastStatus: $("status").textContent,
+          hasData: parsedRows.length > 0,
+        };
+      }
+
+      function restoreDashboardState(type) {
+        const state = dashboardStates[type];
+        const config = DASHBOARD_CONFIG[type];
+
+        if (!state || !state.hasData) {
+          clearUiForDashboard(config);
+          return;
+        }
+
+        parsedRows = JSON.parse(JSON.stringify(state.parsedRows));
+        visibleRows = JSON.parse(JSON.stringify(state.visibleRows));
+        latestInsightRows = JSON.parse(JSON.stringify(state.latestInsightRows));
+        latestSummary = JSON.parse(JSON.stringify(state.latestSummary));
+        listOpenState = JSON.parse(JSON.stringify(state.listOpenState));
+
+        $("brandInput").value = state.brandInput || "";
+        $("fileInput").value = "";
+        setUploadedFileName(state.uploadedFileName || "");
+
+        const campaigns = Array.from(new Set(parsedRows.map((r) => r.캠페인).filter(Boolean))).sort((a, b) => a.localeCompare(b, "ko"));
+        setSelectOptions($("filterCampaign"), campaigns, "전체 캠페인");
+        $("filterCampaign").value = state.filterCampaign || "";
+
+        refreshAdGroupFilterOptions();
+        $("filterAdGroup").value = state.filterAdGroup || "";
+
+        visibleRows = parsedRows.filter((row) => {
+          const campaignOk = !$("filterCampaign").value || row.캠페인 === $("filterCampaign").value;
+          const adGroupOk = !$("filterAdGroup").value || row.광고그룹 === $("filterAdGroup").value;
+          return campaignOk && adGroupOk;
+        });
+
+        $("status").textContent = state.lastStatus || config.statusIdle;
+        clearError();
+
+        renderInsights(visibleRows);
+        $("filterSummary").textContent = `필터 결과: ${visibleRows.length.toLocaleString("ko-KR")}개 / 전체 ${parsedRows.length.toLocaleString("ko-KR")}개`;
+      }
+
+      function applyDashboardConfig(type) {
+        const config = DASHBOARD_CONFIG[type];
+        if (!config) return;
+
+        saveCurrentDashboardState();
+
+        currentDashboard = type;
+        document.body.setAttribute("data-theme", type === "shopping" ? "shopping" : "powerlink");
+        document.title = config.title;
+
+        $("currentMenuLabel").textContent = config.label;
+        $("dashboardTitle").textContent = config.title;
+        $("dashboardDesc").textContent = config.desc;
+        $("dashboardTag").textContent = config.tag;
+        $("uploadGuideLabel").textContent = config.uploadLabel;
+        $("topConvTitle").textContent = config.topConvTitle;
+        $("topCostTitle").textContent = config.topCostTitle;
+        $("upwardTitle").textContent = config.upwardTitle;
+        $("downwardTitle").textContent = config.downwardTitle;
+        $("expandTitle").textContent = config.expandTitle;
+        $("chartConvLabel").textContent = config.chartConvLabel;
+        $("chartCostLabel").textContent = config.chartCostLabel;
+
+        document.querySelectorAll(".dropdown-item").forEach((button) => {
+          button.classList.toggle("active", button.dataset.dashboard === type);
+        });
+
+        restoreDashboardState(type);
+      }
+
+      function getParsedValue(row, index) {
+        return index >= 0 ? row[index] : "";
+      }
+
+      async function readRowsFromFile(file) {
+        const lower = file.name.toLowerCase();
+
+        if (lower.endsWith(".xlsx") || lower.endsWith(".xls")) {
+          const buf = await file.arrayBuffer();
+          const wb = XLSX.read(buf, { type: "array" });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          return XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
+        }
+
+        const text = await file.text();
+        const delimiter = text.includes("\t") && !text.includes(",") ? "\t" : ",";
+        return parseDelimitedText(text, delimiter);
+      }
+
+      async function build() {
+        clearError();
+
+        const file = $("fileInput").files?.[0];
+        if (!file) {
+          setError("파일을 먼저 선택해 주세요.");
+          return;
+        }
+
+        $("status").textContent = `${DASHBOARD_CONFIG[currentDashboard].label} 데이터 분석 중...`;
+        setUploadedFileName(file.name);
+
+        const aoa = await readRowsFromFile(file);
+        if (!aoa.length) throw new Error("파일에서 데이터를 읽지 못했습니다.");
+
+        const headerRowIdx = detectHeaderRow(aoa);
+        const headers = (aoa[headerRowIdx] || []).map((x) => String(x ?? "").trim());
+        const currentMap = getCurrentHeaderMap();
+
+        const sourceIdx = {
+          campaign: findHeaderIndex(headers, currentMap.campaign),
+          adGroup: findHeaderIndex(headers, currentMap.adGroup),
+          item: findHeaderIndex(headers, currentMap.item),
+          impression: findHeaderIndex(headers, currentMap.impression),
+          click: findHeaderIndex(headers, currentMap.click),
+          ctr: findHeaderIndex(headers, currentMap.ctr),
+          avgCpc: findHeaderIndex(headers, currentMap.avgCpc),
+          totalCost: findHeaderIndex(headers, currentMap.totalCost),
+          conv: findHeaderIndex(headers, currentMap.conv),
+          convRate: findHeaderIndex(headers, currentMap.convRate),
+          convRevenue: findHeaderIndex(headers, currentMap.convRevenue),
+          adCost: findHeaderIndex(headers, currentMap.adCost),
+          rank: findHeaderIndex(headers, currentMap.rank),
+        };
+
+        const missing = Object.entries(sourceIdx)
+          .filter(([, value]) => value < 0)
+          .map(([key]) => key);
+
+        if (missing.length) {
+          throw new Error("필수 헤더 누락: " + missing.join(", "));
+        }
+
+        const rows = aoa
+          .slice(headerRowIdx + 1)
+          .filter((r) => Array.isArray(r) && r.some((x) => String(x ?? "").trim()))
+          .map((r) => {
+            const rawItem = String(getParsedValue(r, sourceIdx.item) ?? "").trim();
+            const itemName = currentDashboard === "shopping"
+              ? extractShoppingMaterialId(rawItem)
+              : rawItem;
+
+            return {
+              항목명: itemName,
+              캠페인: String(getParsedValue(r, sourceIdx.campaign) ?? "").trim(),
+              광고그룹: String(getParsedValue(r, sourceIdx.adGroup) ?? "").trim(),
+              노출수: n(getParsedValue(r, sourceIdx.impression)),
+              클릭수: n(getParsedValue(r, sourceIdx.click)),
+              클릭률: n(getParsedValue(r, sourceIdx.ctr)),
+              평균클릭비용: n(getParsedValue(r, sourceIdx.avgCpc)),
+              총비용: n(getParsedValue(r, sourceIdx.totalCost)),
+              전환수: n(getParsedValue(r, sourceIdx.conv)),
+              전환률: n(getParsedValue(r, sourceIdx.convRate)),
+              전환매출액: n(getParsedValue(r, sourceIdx.convRevenue)),
+              광고비용: n(getParsedValue(r, sourceIdx.adCost)),
+              순위: n(getParsedValue(r, sourceIdx.rank)),
+            };
+          })
+          .filter((x) => x.항목명);
+
+        const brandTerms = parseBrandTerms($("brandInput").value || "");
+        const filtered = rows.filter((x) => !containsBrand(x.항목명, brandTerms));
+
+        parsedRows = filtered.map((x) => {
+          const roas = x.광고비용 > 0 ? (x.전환매출액 / x.광고비용) * 100 : 0;
+          const cpa = x.전환수 > 0 ? x.광고비용 / x.전환수 : Infinity;
+          return { ...x, ROAS: roas, CPA: cpa };
+        });
+
+        const campaigns = Array.from(new Set(parsedRows.map((r) => r.캠페인).filter(Boolean))).sort((a, b) => a.localeCompare(b, "ko"));
+        setSelectOptions($("filterCampaign"), campaigns, "전체 캠페인");
+        refreshAdGroupFilterOptions();
+
+        $("filterCampaign").value = "";
+        $("filterAdGroup").value = "";
+
+        visibleRows = parsedRows.slice();
+        listOpenState = { upward: false, downward: false, expand: false };
+
+        renderInsights(visibleRows);
+        $("filterSummary").textContent = `필터 결과: ${visibleRows.length.toLocaleString("ko-KR")}개 / 전체 ${parsedRows.length.toLocaleString("ko-KR")}개`;
+        $("status").textContent = `${DASHBOARD_CONFIG[currentDashboard].label} 완료: 전체 ${rows.length}행, 상호명 제외 후 ${parsedRows.length}행`;
+
+        saveCurrentDashboardState();
+      }
+
+      function waitForNextFrame() {
+        return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+      }
+
+      async function waitForChartsSettled() {
+        await waitForNextFrame();
+        await waitForNextFrame();
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+
+      function waitForFontsReady() {
+        if (document.fonts && document.fonts.ready) {
+          return document.fonts.ready.catch(() => undefined);
+        }
+        return Promise.resolve();
+      }
+
+      function getPdfSafeFileName(name) {
+        return String(name || "인사이트")
+          .replace(/[\/:*?"<>|]+/g, "_")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function setPdfCaptureMode(enabled) {
+        const root = $("pdfCaptureRoot");
+        if (!root) return;
+
+        if (enabled) {
+          root.dataset.pdfCapture = "true";
+          document.body.classList.add("pdf-capture-mode");
+        } else {
+          delete root.dataset.pdfCapture;
+          document.body.classList.remove("pdf-capture-mode");
+        }
+      }
+
+      function getPdfGroups() {
+        const root = $("pdfCaptureRoot");
+        const sections = Array.from(root.querySelectorAll(":scope > section.card"));
+        const heroSection = root.querySelector(".sticky-shell section.card");
+
+        const firstPageNodes = [
+          heroSection,
+          sections[0],
+          sections[1],
+          sections[2],
+          sections[3],
+        ].filter(Boolean);
+
+        const commentNode = sections[sections.length - 1] || null;
+        const middleNodes = sections.slice(4, -1).filter(Boolean);
+        const commentNodes = commentNode ? [commentNode] : [];
+
+        return { firstPageNodes, middleNodes, commentNodes };
+      }
+
+      function getChartImageDataURL(canvasId) {
+        const canvas = $(canvasId);
+        if (!canvas) return "";
+        try {
+          return canvas.toDataURL("image/png", 1.0);
+        } catch (_) {
+          return "";
+        }
+      }
+
+      function replaceCloneChartsWithImages(cloneRoot) {
+        const chartMap = [
+          { canvasId: "chartTopConv", dataUrl: getChartImageDataURL("chartTopConv") },
+          { canvasId: "chartTopCost", dataUrl: getChartImageDataURL("chartTopCost") },
+        ];
+
+        chartMap.forEach(({ canvasId, dataUrl }) => {
+          if (!dataUrl) return;
+          const targetCanvas = cloneRoot.querySelector(`#${canvasId}`);
+          if (!targetCanvas) return;
+
+          const img = document.createElement("img");
+          img.src = dataUrl;
+          img.alt = canvasId;
+          img.className = "chart-image";
+          img.width = targetCanvas.width || 800;
+          img.height = targetCanvas.height || 240;
+
+          const wrap = targetCanvas.parentElement;
+          if (wrap) {
+            wrap.innerHTML = "";
+            wrap.appendChild(img);
+          }
+        });
+      }
+
+      function expandCloneInsightTables(cloneRoot) {
+        const map = [
+          { id: "upward", rows: latestInsightRows.upward || [] },
+          { id: "downward", rows: latestInsightRows.downward || [] },
+          { id: "expand", rows: latestInsightRows.expand || [] },
+        ];
+
+        map.forEach(({ id, rows }) => {
+          const container = cloneRoot.querySelector(`#${id}`);
+          if (container) {
+            container.innerHTML = tableHtml(rows, "조건에 맞는 데이터가 없습니다.");
+          }
+        });
+
+        cloneRoot.querySelectorAll(".list-toggle-row").forEach((el) => {
+          el.remove();
+        });
+      }
+
+      async function captureNodesAsSingleCanvas(nodes, options = {}) {
+        if (!nodes || !nodes.length) return null;
+
+        const renderRoot = document.createElement("div");
+        renderRoot.className = "pdf-render-root";
+
+        const renderStack = document.createElement("div");
+        renderStack.className = "pdf-render-stack";
+        renderRoot.appendChild(renderStack);
+
+        nodes.forEach((node) => {
+          const clone = node.cloneNode(true);
+          renderStack.appendChild(clone);
+        });
+
+        document.body.appendChild(renderRoot);
+
+        try {
+          if (options.expandAllTables) {
+            expandCloneInsightTables(renderStack);
+          }
+
+          if (options.useChartImages) {
+            replaceCloneChartsWithImages(renderStack);
+          }
+
+          await waitForNextFrame();
+          await waitForNextFrame();
+          await new Promise((resolve) => setTimeout(resolve, 60));
+
+          const canvas = await html2canvas(renderStack, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            logging: false,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 1400,
+            windowHeight: Math.max(renderStack.scrollHeight + 200, 1200),
+          });
+
+          return canvas;
+        } finally {
+          renderRoot.remove();
+        }
+      }
+
+      function addCanvasFitToSinglePage(doc, canvas, addNewPage = false) {
+        if (!canvas) return;
+
+        const pageW = doc.internal.pageSize.getWidth();
+        const pageH = doc.internal.pageSize.getHeight();
+        const margin = 6;
+        const usableW = pageW - margin * 2;
+        const usableH = pageH - margin * 2;
+
+        const widthRatio = usableW / canvas.width;
+        const heightRatio = usableH / canvas.height;
+        const ratio = Math.min(widthRatio, heightRatio);
+
+        const imgW = canvas.width * ratio;
+        const imgH = canvas.height * ratio;
+
+        const x = margin;
+        const y = margin;
+
+        if (addNewPage) doc.addPage();
+
+        const imgData = canvas.toDataURL("image/png");
+        doc.addImage(imgData, "PNG", x, y, imgW, imgH, undefined, "FAST");
+      }
+
+      function addCanvasPaginated(doc, canvas, addNewPage = false) {
+        if (!canvas) return;
+
+        const pageW = doc.internal.pageSize.getWidth();
+        const pageH = doc.internal.pageSize.getHeight();
+        const margin = 6;
+        const usableW = pageW - margin * 2;
+        const usableH = pageH - margin * 2;
+
+        const pxPerMm = canvas.width / usableW;
+        const sliceHeightPx = Math.max(1, Math.floor(usableH * pxPerMm));
+
+        const pageCanvas = document.createElement("canvas");
+        const pageCtx = pageCanvas.getContext("2d");
+        pageCanvas.width = canvas.width;
+
+        let renderedHeightPx = 0;
+        let firstLoop = true;
+
+        while (renderedHeightPx < canvas.height) {
+          const remainingPx = canvas.height - renderedHeightPx;
+          const currentSliceHeightPx = Math.min(sliceHeightPx, remainingPx);
+          const currentSliceHeightMm = currentSliceHeightPx / pxPerMm;
+
+          pageCanvas.height = currentSliceHeightPx;
+          pageCtx.clearRect(0, 0, pageCanvas.width, pageCanvas.height);
+          pageCtx.drawImage(
+            canvas,
+            0,
+            renderedHeightPx,
+            canvas.width,
+            currentSliceHeightPx,
+            0,
+            0,
+            pageCanvas.width,
+            currentSliceHeightPx
+          );
+
+          if (addNewPage || !firstLoop) {
+            doc.addPage();
+          }
+
+          const imgData = pageCanvas.toDataURL("image/png");
+          doc.addImage(imgData, "PNG", margin, margin, usableW, currentSliceHeightMm, undefined, "FAST");
+
+          renderedHeightPx += currentSliceHeightPx;
+          addNewPage = false;
+          firstLoop = false;
+        }
+      }
+
+      async function downloadInsightPdf() {
+        if (!parsedRows.length) {
+          setError("다운로드할 인사이트가 없습니다. 먼저 파일을 업로드하고 인사이트를 생성해 주세요.");
+          return;
+        }
+
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          setError("PDF 라이브러리를 불러오지 못했습니다.");
+          return;
+        }
+
+        if (!window.html2canvas) {
+          setError("PDF 캡처 라이브러리를 불러오지 못했습니다.");
+          return;
+        }
+
+        const button = $("downloadPdfBtn");
+        const originalText = button.textContent;
+        button.textContent = "PDF 생성 중...";
+        button.disabled = true;
+        clearError();
+
+        const headerWrap = $("headerDropdown");
+        const dropdownToggle = $("dropdownToggle");
+        const headerWasOpen = headerWrap?.classList.contains("open");
+
+        try {
+          if (headerWrap && headerWasOpen) {
+            headerWrap.classList.remove("open");
+            dropdownToggle?.setAttribute("aria-expanded", "false");
+          }
+
+          setPdfCaptureMode(true);
+          await waitForFontsReady();
+          await waitForChartsSettled();
+
+          const { firstPageNodes, middleNodes, commentNodes } = getPdfGroups();
+          if (!firstPageNodes.length) {
+            throw new Error("PDF로 저장할 첫 페이지 영역을 찾지 못했습니다.");
+          }
+
+          const firstCanvas = await captureNodesAsSingleCanvas(firstPageNodes, {
+            useChartImages: true,
+            expandAllTables: false
+          });
+
+          const middleCanvas = middleNodes.length
+            ? await captureNodesAsSingleCanvas(middleNodes, {
+                useChartImages: false,
+                expandAllTables: true
+              })
+            : null;
+
+          const commentCanvas = commentNodes.length
+            ? await captureNodesAsSingleCanvas(commentNodes, {
+                useChartImages: false,
+                expandAllTables: false
+              })
+            : null;
+
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4", compress: true });
+
+          addCanvasFitToSinglePage(doc, firstCanvas, false);
+
+          if (middleCanvas) {
+            addCanvasPaginated(doc, middleCanvas, true);
+          }
+
+          if (commentCanvas) {
+            addCanvasFitToSinglePage(doc, commentCanvas, true);
+          }
+
+          const fileName = `${getPdfSafeFileName(DASHBOARD_CONFIG[currentDashboard].label)}_인사이트_대시보드.pdf`;
+          doc.save(fileName);
+        } catch (error) {
+          console.error(error);
+          setError(`PDF 다운로드 중 오류가 발생했습니다: ${error?.message || error}`);
+        } finally {
+          setPdfCaptureMode(false);
+          if (headerWrap && headerWasOpen) {
+            headerWrap.classList.add("open");
+            dropdownToggle?.setAttribute("aria-expanded", "true");
+          }
+          button.textContent = originalText;
+          button.disabled = false;
+        }
+      }
+
+      function initHeaderDropdown() {
+        const wrap = $("headerDropdown");
+        const toggle = $("dropdownToggle");
+
+        toggle.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isOpen = wrap.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        document.querySelectorAll(".dropdown-item").forEach((item) => {
+          item.addEventListener("click", (e) => {
+            const type = e.currentTarget.dataset.dashboard;
+            applyDashboardConfig(type);
+            wrap.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!wrap.contains(e.target)) {
+            wrap.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            wrap.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      $("buildBtn").addEventListener("click", async () => {
+        try {
+          await build();
+        } catch (e) {
+          console.error(e);
+          setError(e?.message ? String(e.message) : String(e));
+          $("status").textContent = "오류가 발생했습니다.";
+        }
+      });
+
+      $("fileInput").addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        setUploadedFileName(file ? file.name : dashboardStates[currentDashboard].uploadedFileName || "");
+      });
+
+      $("filterCampaign").addEventListener("change", () => {
+        refreshAdGroupFilterOptions();
+        applyFilters();
+      });
+
+      $("filterAdGroup").addEventListener("change", applyFilters);
+
+      $("regenCommentBtn").addEventListener("click", () => {
+        if (!visibleRows.length) return;
+        renderInsights(visibleRows);
+        saveCurrentDashboardState();
+      });
+
+      $("copyCommentBtn").addEventListener("click", async () => {
+        const text = $("commentBox").value.trim();
+        if (!text) return;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          $("commentMeta").textContent = `복사 완료: ${new Date().toLocaleString("ko-KR")}`;
+        } catch (_) {
+          $("commentMeta").textContent = "복사 실패: 브라우저 권한을 확인해 주세요.";
+        }
+      });
+
+      $("downloadPdfBtn").addEventListener("click", downloadInsightPdf);
+      $("toggleUpwardBtn").addEventListener("click", () => toggleInsightList("upward"));
+      $("toggleDownwardBtn").addEventListener("click", () => toggleInsightList("downward"));
+      $("toggleExpandBtn").addEventListener("click", () => toggleInsightList("expand"));
+
+      initHeaderDropdown();
+      clearUiForDashboard(DASHBOARD_CONFIG.powerlink);
+      applyDashboardConfig("powerlink");
+    </script>
+  </body>
+</html>
